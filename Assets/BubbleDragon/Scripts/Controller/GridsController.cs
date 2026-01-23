@@ -32,7 +32,7 @@ public class GridsController : MonoController
         string[] lines = File.ReadAllLines(Application.streamingAssetsPath + "/Level/level_1.txt");
 		float hspace = Mathf.Sqrt(3) / 2;
 
-        float maxHeight = (lines.Length - 1) * hspace + 1;
+        float maxHeight = (lines.Length - 2) * hspace + 1;
         float showHeight = (11 - 1) * hspace + 1;
 
 		for (int i = 1; i < lines.Length; i++)
