@@ -38,3 +38,4 @@
 /Unity.VSCode.Editor.csproj
 /UnityEditor.TestRunner.csproj
 /UnityEngine.TestRunner.csproj
+*.csproj

@@ -1,0 +1,17 @@
+{
+    "name": "BubbleDragon",
+    "rootNamespace": "",
+    "references": [
+        "GUID:72cb6963b76bf4c44a28bebbfcd96022",
+        "GUID:f3c6975ec7bdee048aa3a589f3d75652"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

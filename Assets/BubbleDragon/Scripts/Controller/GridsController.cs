@@ -1,0 +1,60 @@
+using System.Collections.Generic;
+using System.IO;
+using QMVC;
+using UnityEngine;
+
+public class GridsController : MonoController
+{
+    PoolSystem _poolSystem;
+
+    public override void Init()
+    {
+        _poolSystem = this.GetSystem<PoolSystem>();
+
+
+        CreateLevel();
+
+	}
+
+
+    public class BallCell
+    {
+        BallController[] balls;
+        int count;
+	}
+
+
+    Dictionary<int, BallController[]> ballGrids = new Dictionary<int, BallController[]>();
+
+    public void CreateLevel()
+    {
+        string[] lines = File.ReadAllLines(Application.streamingAssetsPath + "/Level/level_1.txt");
+		float hspace = Mathf.Sqrt(3) / 2;
+
+		for (int i = 1; i < lines.Length; i++)
+        {
+            float height = (i - 1) * 1 * hspace;
+			string[] contents = lines[i].Split(',');
+			int halfCount = contents.Length / 2;
+			float width = (contents.Length % 2 == 0) ? (halfCount * 1 - 0.5f) : halfCount * 1;
+
+			for (int j = 0; j < contents.Length; j++)
+            {
+                if (contents[j] != "0")
+                {
+					BallController ball = _poolSystem.GetBall();
+					ball.transform.localPosition = new Vector2(width - j * 1, height);
+				}
+            }
+        }
+	}
+
+
+    public void CheckBall(List<BallController> results,BallController ball)
+    {
+
+
+
+    }
+
+}
