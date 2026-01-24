@@ -6,6 +6,7 @@ public class BallController : MonoController
     BallEntity _ballEntity;
 
 
+    public string content { get => _ballEntity.content; set => _ballEntity.content = value; }
     public Vector2Int Coord { get => _ballEntity.coord; set => _ballEntity.coord = value; }
 
 
@@ -21,4 +22,15 @@ public class BallController : MonoController
     {
         //_ballView.SetIconSprite();
     }
+}
+
+
+public static class BallControllerExtension
+{
+
+    public static bool TypeEquals(this BallController self,BallController other)
+    {
+        return other != null && self.content == other.content;
+    }
+
 }
