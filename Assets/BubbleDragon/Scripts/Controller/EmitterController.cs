@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using QMVC;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 public class EmitterController : MonoController
 {
@@ -10,6 +12,11 @@ public class EmitterController : MonoController
     public override void Init()
     {
         _poolSystem = this.GetSystem<PoolSystem>();
+
+
+        this.RegisterEvent<BackGroundDragEvent>(OnAim);
+        this.RegisterEvent<BackGroundPointerUpEvent>(OnEmitter);
+
     }
     public List<Vector3> paths = new List<Vector3>();
 
@@ -25,37 +32,36 @@ public class EmitterController : MonoController
 		{
 			Debug.DrawLine(paths[i - 1], paths[i], Color.red);
 		}
-        if(Input.GetMouseButton(0)&& !isCalculatingPath)
-		{
-            isCalculatingPath = true;
-			Vector3 clickWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            clickWorldPos.z = 0;
-            if (clickWorldPos.y > transform.position.y + 0.1f) 
-            {
-				//Debug.Log(clickWorldPos);
-                Vector3 dir = clickWorldPos - transform.position;
-                if (dir.normalized != Vector3.zero)
-                {
-                    Debug.Log("º∆À„");
-                    try
-                    {
-						paths.Clear();
-						PathForecast(paths, transform.position, dir);
-					}
-                    finally
-                    {
-                        isCalculatingPath = false;
+  //      if(Input.GetMouseButton(0)&& !isCalculatingPath)
+		//{
+  //          isCalculatingPath = true;
+		//	Vector3 clickWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+  //          clickWorldPos.z = 0;
+  //          if (clickWorldPos.y > transform.position.y + 0.1f) 
+  //          {
+		//		//Debug.Log(clickWorldPos);
+  //              Vector3 dir = clickWorldPos - transform.position;
+  //              if (dir.normalized != Vector3.zero)
+  //              {
+  //                  Debug.Log("º∆À„");
+  //                  try
+  //                  {
+		//				paths.Clear();
+		//				PathForecast(paths, transform.position, dir);
+		//			}
+  //                  finally
+  //                  {
+  //                      isCalculatingPath = false;
 
-					}
+		//			}
 				
-				}
-			}
-            else
-            {
-                isCalculatingPath = false;
-            }
-		}
-
+		//		}
+		//	}
+  //          else
+  //          {
+  //              isCalculatingPath = false;
+  //          }
+		//}
         if (Input.GetMouseButtonUp(0))
         {
             //Emitter();
@@ -95,7 +101,7 @@ public class EmitterController : MonoController
 			Vector3 targetPoint;
 
 			targetPoint = hits[0].centroid;
-            paths.Add(targetPoint);
+           
 
             if (hits[0].transform.name == "Top")
             {
@@ -107,6 +113,7 @@ public class EmitterController : MonoController
                 targetPoint.x = (width + index * 1);
                 end = targetPoint;
                 isHas = true;
+				paths.Add(end);
 				return;
             }
 
@@ -141,17 +148,70 @@ public class EmitterController : MonoController
                 {
                     end = hits[0].transform.position + new Vector3(0.5f, -heightOffset);
 				}
-
-                isHas = true;
+				paths.Add(end);
+				isHas = true;
 				return;
 			}
 
-            
+			paths.Add(targetPoint);
+
 			var newDir = Vector2.Reflect(dir, hits[0].normal);
             dir = newDir;
             Debug.DrawLine(targetPoint, targetPoint + (Vector3)newDir.normalized * 2, Color.yellow);
 			hitCount = Physics2D.CircleCastNonAlloc(targetPoint + (Vector3)newDir.normalized * 0.1f, 0.5f, newDir.normalized, hits, 50, layerMask);
             Debug.Log(hitCount);
 		}
+    }
+
+
+
+    private void OnBeginAim(BackGroundPointerDownEvent evt)
+    {
+
+    }
+
+    private void OnAim(BackGroundDragEvent evt)
+    {
+        //Debug.Log(evt.eventData.pointerCurrentRaycast.worldPosition);
+
+        if (!isCalculatingPath)
+        {
+            isCalculatingPath = true;
+            if (evt.eventData.pointerCurrentRaycast.worldPosition.y > transform.position.y + 0.1f)
+            {
+                Vector3 dir = evt.eventData.pointerCurrentRaycast.worldPosition - transform.position;
+                if (dir.normalized != Vector3.zero)
+                {
+                    try
+                    {
+                        paths.Clear();
+                        PathForecast(paths, transform.position, dir);
+                    }
+                    finally
+                    {
+                        isCalculatingPath = false;
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void OnEmitter(BackGroundPointerUpEvent evt)
+    {
+		//∑¢…‰
+		BallController ball = _poolSystem.GetBall();
+		ball.transform.DOPath(paths.ToArray(), 1);
+        //‘› ±∆¡±Œ ‰»Î≤Ÿ◊˜ºÏ≤‚
+        this.SendCommand(new BackGroundInputAllowCommand(false));
+	}
+
+
+
+
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        Debug.Log(eventData.position);
     }
 }
