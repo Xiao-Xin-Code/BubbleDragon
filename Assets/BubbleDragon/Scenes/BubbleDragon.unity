@@ -1135,7 +1135,7 @@ GameObject:
   - component: {fileID: 576687197}
   m_Layer: 8
   m_Name: Top
-  m_TagString: Untagged
+  m_TagString: Top Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3165,8 +3165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4a688d438978b5449fa2b2ab2fdd9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paths: []
-  isCalculatingPath: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 384

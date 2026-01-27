@@ -62,3 +62,26 @@ public class BackGroundEndDragEvent
 		this.eventData = eventData;
 	}
 }
+
+
+public class PlaceToGridsEvent
+{
+	public BallController ball;
+
+	public PlaceToGridsEvent(BallController ball)
+	{
+		this.ball = ball;
+	}
+
+}
+
+
+public class EliminateBallEvent
+{
+	public BallController ball;
+
+	public EliminateBallEvent(BallController ball)
+	{
+		this.ball = ball;
+	}
+}

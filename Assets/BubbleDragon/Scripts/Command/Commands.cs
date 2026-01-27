@@ -92,3 +92,36 @@ public class BackGroundEndDragCommand : AbstractCommand
 		this.SendEvent(new BackGroundEndDragEvent(eventData));
     }
 }
+
+
+public class PlaceToGridsCommand : AbstractCommand
+{
+	BallController ball;
+
+	public PlaceToGridsCommand(BallController ball)
+	{
+		this.ball = ball;
+	}
+
+
+    protected override void OnExecute()
+    {
+		this.SendEvent(new PlaceToGridsEvent(ball));
+    }
+}
+
+
+public class EliminateBallCommand : AbstractCommand
+{
+	BallController ball;
+
+	public EliminateBallCommand(BallController ball)
+	{
+		this.ball = ball;
+	}
+
+    protected override void OnExecute()
+    {
+		this.SendEvent(new EliminateBallEvent(ball));
+    }
+}
