@@ -7,6 +7,7 @@ using UnityEngine;
 public class GridsController : MonoController
 {
     PoolSystem _poolSystem;
+    LevelModel _levelModel;
 
 	public BallController ball;
 
@@ -16,8 +17,11 @@ public class GridsController : MonoController
 	public override void Init()
     {
         _poolSystem = this.GetSystem<PoolSystem>();
+        _levelModel = this.GetModel<LevelModel>();
 
-        this.RegisterEvent<PlaceToGridsEvent>(PlaceToGrids);
+
+		this.RegisterEvent<PlaceToGridsEvent>(PlaceToGrids);
+        this.RegisterEvent<BallCellEvent>(GetBallCell);
 
         //CreateLevel();
     }
@@ -29,12 +33,6 @@ public class GridsController : MonoController
         public int count;
         public bool isShort;
     }
-
-
-    
-
-    int maxShowLine = -1;
-    int minShowLine = -1;
 
 
     public void CreateLevel()
@@ -70,8 +68,8 @@ public class GridsController : MonoController
             ballGrids.Add(i, ballCell);
         }
 
-        maxShowLine = lines.Length - 1;
-        minShowLine = lines.Length - 1 - 10;
+        _levelModel.maxRow = lines.Length - 1;
+        _levelModel.minRow = (lines.Length - 11);
 
         float space = (maxHeight - showHeight) + 11;
 
@@ -149,19 +147,6 @@ public class GridsController : MonoController
     }
 
 
-    public void Correction()
-    {
-        Vector3 end = Vector3.zero;
-
-        //当碰撞到ball，基于ball判断需要的位置
-
-        //如果到顶部时
-        //先根据当前最高line，想办法获取到当前是否存在可显示的高层，
-        //结合获取的高层的计算应该到达的位置
-
-    }
-
-
     public void EliminateBalls(BallController ball)
     {
         List<BallController> results = new List<BallController>();
@@ -189,6 +174,16 @@ public class GridsController : MonoController
 			}
 		}
 
+	}
+
+
+	private void GetBallCell(BallCellEvent evt)
+	{
+		if (ballGrids.ContainsKey(evt.row))
+        {
+            evt.ballcell = ballGrids[evt.row];
+        }
+        evt.ballcell = null;
 	}
 
 }

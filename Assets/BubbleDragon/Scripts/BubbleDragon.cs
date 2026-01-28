@@ -6,6 +6,7 @@ public class BubbleDragon : Architecture<BubbleDragon>
     {
 		RegisterSystem<AssetSystem>(new AssetSystem());
 		RegisterSystem<PoolSystem>(new PoolSystem());
+		RegisterModel<LevelModel>(new LevelModel());
         
 	}
 }

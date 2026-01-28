@@ -1,5 +1,6 @@
 
 using UnityEngine.EventSystems;
+using static GridsController;
 
 
 public class BackGroundInputAllowEvent
@@ -83,5 +84,17 @@ public class EliminateBallEvent
 	public EliminateBallEvent(BallController ball)
 	{
 		this.ball = ball;
+	}
+}
+
+
+public class BallCellEvent
+{
+	public int row;
+	public BallCell ballcell;
+
+	public BallCellEvent(int row)
+	{
+		this.row = row;
 	}
 }

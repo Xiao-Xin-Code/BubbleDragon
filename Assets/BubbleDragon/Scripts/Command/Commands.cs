@@ -1,5 +1,6 @@
 using QMVC;
 using UnityEngine.EventSystems;
+using static GridsController;
 
 
 public class BackGroundInputAllowCommand : AbstractCommand
@@ -124,4 +125,22 @@ public class EliminateBallCommand : AbstractCommand
     {
 		this.SendEvent(new EliminateBallEvent(ball));
     }
+}
+
+
+public class BallCellCommand : AbstractCommand<BallCell>
+{
+	int row;
+
+	public BallCellCommand(int row)
+	{
+		this.row = row;
+	}
+
+    protected override BallCell OnExecute()
+    {
+		BallCellEvent evt = new BallCellEvent(row);
+		this.SendEvent(evt);
+		return evt.ballcell;
+	}
 }
